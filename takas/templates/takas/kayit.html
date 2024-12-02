@@ -1,0 +1,136 @@
+{% extends 'takas/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Firma Kaydı</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="alert alert-info mb-4">
+                        <h5><i class="fas fa-info-circle me-2"></i>Önemli Bilgi</h5>
+                        <p class="mb-0">
+                            Platformumuzda işlem yapabilmek için firma bilgilerinizi tamamlamanız gerekmektedir. 
+                            Bu bilgiler diğer kullanıcılarla iletişim kurmanız ve ticari işlemler yapmanız için gereklidir.
+                        </p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <!-- Kullanıcı Bilgileri -->
+                            <div class="col-md-12 mb-4">
+                                <h5 class="mb-3">Hesap Bilgileri</h5>
+                                <div class="mb-3">
+                                    <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.username.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.email.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+                                    {{ form.password1 }}
+                                    {% if form.password1.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.password1.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+                                    {{ form.password2 }}
+                                    {% if form.password2.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.password2.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Firma Bilgileri -->
+                            <div class="col-md-12">
+                                <h5 class="mb-3">Firma Bilgileri</h5>
+                                <div class="mb-3">
+                                    <label for="{{ form.firma_adi.id_for_label }}" class="form-label">{{ form.firma_adi.label }}</label>
+                                    {{ form.firma_adi }}
+                                    {% if form.firma_adi.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.firma_adi.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.isletme_turu.id_for_label }}" class="form-label">{{ form.isletme_turu.label }}</label>
+                                    {{ form.isletme_turu }}
+                                    {% if form.isletme_turu.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.isletme_turu.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.adres.id_for_label }}" class="form-label">{{ form.adres.label }}</label>
+                                    {{ form.adres }}
+                                    {% if form.adres.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.adres.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="{{ form.telefon.id_for_label }}" class="form-label">{{ form.telefon.label }}</label>
+                                    {{ form.telefon }}
+                                    {% if form.telefon.errors %}
+                                        <div class="alert alert-danger mt-2">
+                                            {{ form.telefon.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Kaydı Tamamla
+                            </button>
+                            <a href="{% url 'takas:anasayfa' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Ana Sayfaya Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

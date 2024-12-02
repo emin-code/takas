@@ -1,0 +1,96 @@
+{% extends "takas/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-box me-2"></i>Yeni Ürün Ekle</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Ürün Adı -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.ad.label }}</label>
+                            {{ form.ad }}
+                            <div class="form-text text-muted">Örnek: Kırmızı Elma, Pamuk Tişört</div>
+                        </div>
+
+                        <!-- Kategori -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.kategori.label }}</label>
+                            {{ form.kategori }}
+                        </div>
+
+                        <!-- Miktar ve Birim -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.miktar.label }}</label>
+                                {{ form.miktar }}
+                                <div class="form-text text-muted">Stokta bulunan miktar</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.birim.label }}</label>
+                                {{ form.birim }}
+                                <div class="form-text text-muted">Ölçü birimi</div>
+                            </div>
+                        </div>
+
+                        <!-- Fiyat ve Durum -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.fiyat.label }}</label>
+                                {{ form.fiyat }}
+                                <div class="form-text text-muted">Sadece satış için fiyat belirtin</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.durum.label }}</label>
+                                {{ form.durum }}
+                            </div>
+                        </div>
+
+                        <!-- Açıklama -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.aciklama.label }}</label>
+                            {{ form.aciklama }}
+                            <div class="form-text text-muted">Ürünün özellikleri, durumu ve diğer detayları</div>
+                        </div>
+
+                        <!-- Resim -->
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.resim.label }}</label>
+                            <div class="input-group">
+                                {{ form.resim }}
+                            </div>
+                            <div class="form-text text-muted">
+                                Önerilen boyut: En fazla 800x800 piksel. Otomatik olarak boyutlandırılacaktır.
+                            </div>
+                        </div>
+                        
+                        <!-- Hata Mesajları -->
+                        {% if form.errors %}
+                        <div class="alert alert-danger mb-3">
+                            <i class="fas fa-exclamation-circle me-2"></i>Lütfen aşağıdaki hataları düzeltin:
+                            {{ form.errors }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Butonlar -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-grow-1">
+                                <i class="fas fa-save me-2"></i>Ürünü Kaydet
+                            </button>
+                            <a href="{% url 'takas:urunlerim' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>İptal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

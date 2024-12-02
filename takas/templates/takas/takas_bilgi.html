@@ -1,0 +1,67 @@
+{% extends 'takas/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Takas Teklifi Bilgilendirme</h4>
+                </div>
+                <div class="card-body">
+                    <!-- İstenen Ürün Bilgileri -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5>İstenen Ürün:</h5>
+                            <div class="d-flex align-items-center">
+                                {% if istenen_urun.resim %}
+                                    <img src="{{ istenen_urun.resim.url }}" alt="{{ istenen_urun.ad }}" class="img-thumbnail" style="max-width: 100px; margin-right: 15px;">
+                                {% endif %}
+                                <div>
+                                    <h6>{{ istenen_urun.ad }}</h6>
+                                    <p class="mb-0">Satıcı: {{ istenen_urun.esnaf.firma_adi }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bilgilendirme Mesajı -->
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {{ mesaj }}
+                    </div>
+
+                    <!-- Yönlendirme Butonları -->
+                    <div class="d-grid gap-2">
+                        {% if giris_url %}
+                            <a href="{{ giris_url }}" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
+                            </a>
+                            <a href="{% url 'takas:kayit' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i>Yeni Hesap Oluştur
+                            </a>
+                        {% endif %}
+
+                        {% if kayit_url %}
+                            <a href="{{ kayit_url }}" class="btn btn-primary">
+                                <i class="fas fa-store me-2"></i>Firma Bilgilerini Tamamla
+                            </a>
+                        {% endif %}
+
+                        {% if urun_ekle_url %}
+                            <a href="{{ urun_ekle_url }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Yeni Ürün Ekle
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'takas:urun_detay' istenen_urun.id %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Ürün Detayına Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
