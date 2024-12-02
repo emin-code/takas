@@ -1,0 +1,91 @@
+{% extends 'takas/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Ürün Öne Çıkarma</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Ürün Bilgileri -->
+                    <div class="mb-4">
+                        <h5>Öne Çıkarılacak Ürün</h5>
+                        <div class="d-flex align-items-center">
+                            {% if urun.resim %}
+                                <img src="{{ urun.resim.url }}" alt="{{ urun.ad }}" class="img-thumbnail me-3" style="width: 100px;">
+                            {% endif %}
+                            <div>
+                                <h6 class="mb-1">{{ urun.ad }}</h6>
+                                <p class="text-muted mb-0">{{ urun.kategori.ad }}</p>
+                                {% if urun.fiyat %}
+                                    <p class="text-primary mb-0">{{ urun.fiyat }} TL</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Öne Çıkarma Paketleri -->
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <h5 class="mb-3">Öne Çıkarma Paketleri</h5>
+                        
+                        {% for radio in form.secenek %}
+                        <div class="card mb-3 {% if forloop.first %}border-primary{% endif %}">
+                            <div class="card-body">
+                                <div class="form-check">
+                                    {{ radio.tag }}
+                                    <label class="form-check-label" for="{{ radio.id_for_label }}">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">{{ radio.choice_label }}</h6>
+                                                <p class="text-muted mb-0">
+                                                    {% with secenek=form.secenek.field.queryset|get_item:forloop.counter0 %}
+                                                        {{ secenek.sure_gun }} Gün
+                                                        {% if secenek.aciklama %}
+                                                            - {{ secenek.aciklama }}
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                </p>
+                                            </div>
+                                            <div class="text-primary fw-bold">
+                                                {% with secenek=form.secenek.field.queryset|get_item:forloop.counter0 %}
+                                                    {{ secenek.fiyat }} TL
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                {{ form.errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-arrow-right me-2"></i>Devam Et
+                            </button>
+                            <a href="{% url 'takas:urun_detay' urun.id %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>İptal
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Bilgilendirme -->
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Öne çıkarılan ürünler ana sayfada ve kategori sayfalarında üst sıralarda gösterilir.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,232 @@
+{% extends 'takas/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profil Kartı -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Firma Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ profil.firma_adi }}</h5>
+                    <p class="text-muted mb-3">{{ profil.isletme_turu }}</p>
+                    
+                    <div class="mb-3">
+                        <h6><i class="fas fa-map-marker-alt me-2"></i>Adres</h6>
+                        <p class="mb-0">{{ profil.adres }}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6><i class="fas fa-phone me-2"></i>İletişim</h6>
+                        <p class="mb-1">Telefon: {{ profil.telefon }}</p>
+                        {% if profil.whatsapp %}
+                            <p class="mb-0">WhatsApp: {{ profil.whatsapp }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    {% if profil.vergi_no %}
+                        <div class="mb-3">
+                            <h6><i class="fas fa-file-invoice me-2"></i>Vergi Bilgileri</h6>
+                            <p class="mb-1">Vergi No: {{ profil.vergi_no }}</p>
+                            <p class="mb-0">Vergi Dairesi: {{ profil.vergi_dairesi }}</p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'takas:profil_duzenle' %}" class="btn btn-primary">
+                            <i class="fas fa-edit me-2"></i>Profili Düzenle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- İstatistikler ve Aktiviteler -->
+        <div class="col-md-8">
+            <!-- İstatistikler -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ istatistikler.aktif_urun }}</h5>
+                            <p class="card-text">Aktif Ürün</p>
+                            <a href="{% url 'takas:urunlerim' %}" class="text-white">
+                                <i class="fas fa-arrow-right"></i> Ürünlerime Git
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ istatistikler.bekleyen_teklif }}</h5>
+                            <p class="card-text">Bekleyen Teklif</p>
+                            <a href="{% url 'takas:takas_teklifleri' %}" class="text-white">
+                                <i class="fas fa-arrow-right"></i> Tekliflere Git
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ istatistikler.okunmamis_mesaj }}</h5>
+                            <p class="card-text">Okunmamış Mesaj</p>
+                            <a href="{% url 'takas:mesajlar' %}" class="text-white">
+                                <i class="fas fa-arrow-right"></i> Mesajlara Git
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hızlı İşlemler -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Hızlı İşlemler</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a href="{% url 'takas:urun_ekle' %}" class="btn btn-outline-primary d-block">
+                                <i class="fas fa-plus me-2"></i>Yeni Ürün Ekle
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{% url 'takas:urunlerim' %}" class="btn btn-outline-secondary d-block">
+                                <i class="fas fa-box me-2"></i>Ürünlerimi Yönet
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{% url 'takas:takas_teklifleri' %}" class="btn btn-outline-success d-block">
+                                <i class="fas fa-exchange-alt me-2"></i>Takas Tekliflerini Görüntüle
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{% url 'takas:mesajlar' %}" class="btn btn-outline-info d-block">
+                                <i class="fas fa-envelope me-2"></i>Mesajları Görüntüle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reklam ve Öne Çıkarma -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Reklam ve Öne Çıkarma</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-ad fa-3x text-primary mb-3"></i>
+                                    <h5>Reklam Ver</h5>
+                                    <p class="text-muted">Ürünlerinizi ve firmanızı daha fazla kişiye ulaştırın.</p>
+                                    <a href="{% url 'takas:reklam_ver' %}" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i>Yeni Reklam Ver
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-star fa-3x text-warning mb-3"></i>
+                                    <h5>Öne Çıkan Ürünlerim</h5>
+                                    <p class="text-muted">Öne çıkarılan ürünlerinizi yönetin.</p>
+                                    <a href="{% url 'takas:urunlerim' %}" class="btn btn-warning">
+                                        <i class="fas fa-list me-2"></i>Ürünlerimi Görüntüle
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aktif Reklamlarım -->
+            {% if reklamlar %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Aktif Reklamlarım</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Başlık</th>
+                                    <th>Reklam Alanı</th>
+                                    <th>Bitiş Tarihi</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reklam in reklamlar %}
+                                <tr>
+                                    <td>{{ reklam.baslik }}</td>
+                                    <td>{{ reklam.reklam_alani.get_konum_display }}</td>
+                                    <td>{{ reklam.bitis_tarihi|date:"d.m.Y" }}</td>
+                                    <td>
+                                        {% if reklam.aktif %}
+                                        <span class="badge bg-success">Aktif</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">Onay Bekliyor</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Öne Çıkarılan Ürünlerim -->
+            {% if one_cikanlar %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Öne Çıkarılan Ürünlerim</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th>Paket</th>
+                                    <th>Bitiş Tarihi</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for one_cikan in one_cikanlar %}
+                                <tr>
+                                    <td>{{ one_cikan.urun.ad }}</td>
+                                    <td>{{ one_cikan.secenek.ad }}</td>
+                                    <td>{{ one_cikan.bitis_tarihi|date:"d.m.Y" }}</td>
+                                    <td>
+                                        {% if one_cikan.aktif %}
+                                        <span class="badge bg-success">Aktif</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">Onay Bekliyor</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,68 @@
+{% extends 'takas/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Satın Alma Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Ürün Bilgileri -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5>Ürün Detayları:</h5>
+                            <div class="d-flex align-items-center">
+                                {% if urun.resim %}
+                                    <img src="{{ urun.resim.url }}" alt="{{ urun.ad }}" class="img-thumbnail" style="max-width: 100px; margin-right: 15px;">
+                                {% endif %}
+                                <div>
+                                    <h6>{{ urun.ad }}</h6>
+                                    <p class="mb-0">Satıcı: {{ urun.esnaf.firma_adi }}</p>
+                                    <p class="mb-0">Fiyat: {{ urun.fiyat }} TL</p>
+                                    <p class="mb-0">Miktar: {{ urun.miktar }} {{ urun.get_birim_display }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bilgilendirme Mesajı -->
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {{ mesaj }}
+                    </div>
+
+                    <!-- İletişim Bilgileri -->
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-3">Satıcı İletişim Bilgileri</h5>
+                            <p class="mb-2"><i class="fas fa-store me-2"></i>{{ iletisim_bilgileri.firma }}</p>
+                            <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>{{ iletisim_bilgileri.adres }}</p>
+                            <p class="mb-2"><i class="fas fa-phone me-2"></i>{{ iletisim_bilgileri.telefon }}</p>
+                        </div>
+                    </div>
+
+                    <!-- İletişim Butonları -->
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'takas:mesaj_gonder' urun.esnaf.id %}?urun_id={{ urun.id }}" class="btn btn-primary">
+                            <i class="fas fa-envelope me-2"></i>Satıcıya Mesaj Gönder
+                        </a>
+
+                        {% if iletisim_bilgileri.whatsapp %}
+                        <a href="https://wa.me/{{ iletisim_bilgileri.whatsapp|cut:'+' }}" target="_blank" class="btn btn-success">
+                            <i class="fab fa-whatsapp me-2"></i>WhatsApp ile İletişime Geç
+                        </a>
+                        {% endif %}
+
+                        <a href="{% url 'takas:urun_detay' urun.id %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Ürün Detayına Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

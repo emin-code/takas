@@ -1,0 +1,120 @@
+{% extends 'takas/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Profil Düzenle</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Firma Bilgileri -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Temel Bilgiler</h5>
+                            <div class="mb-3">
+                                <label for="{{ form.firma_adi.id_for_label }}" class="form-label">{{ form.firma_adi.label }}</label>
+                                {{ form.firma_adi }}
+                                {% if form.firma_adi.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.firma_adi.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.isletme_turu.id_for_label }}" class="form-label">{{ form.isletme_turu.label }}</label>
+                                {{ form.isletme_turu }}
+                                {% if form.isletme_turu.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.isletme_turu.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- İletişim Bilgileri -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">İletişim Bilgileri</h5>
+                            <div class="mb-3">
+                                <label for="{{ form.adres.id_for_label }}" class="form-label">{{ form.adres.label }}</label>
+                                {{ form.adres }}
+                                {% if form.adres.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.adres.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.telefon.id_for_label }}" class="form-label">{{ form.telefon.label }}</label>
+                                {{ form.telefon }}
+                                {% if form.telefon.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.telefon.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.whatsapp.id_for_label }}" class="form-label">{{ form.whatsapp.label }}</label>
+                                {{ form.whatsapp }}
+                                {% if form.whatsapp.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.whatsapp.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Vergi Bilgileri -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Vergi Bilgileri (İsteğe Bağlı)</h5>
+                            <div class="mb-3">
+                                <label for="{{ form.vergi_no.id_for_label }}" class="form-label">{{ form.vergi_no.label }}</label>
+                                {{ form.vergi_no }}
+                                {% if form.vergi_no.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.vergi_no.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.vergi_dairesi.id_for_label }}" class="form-label">{{ form.vergi_dairesi.label }}</label>
+                                {{ form.vergi_dairesi }}
+                                {% if form.vergi_dairesi.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.vergi_dairesi.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Değişiklikleri Kaydet
+                            </button>
+                            <a href="{% url 'takas:profil' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Profile Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

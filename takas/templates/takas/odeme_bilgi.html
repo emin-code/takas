@@ -1,0 +1,81 @@
+{% extends 'takas/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Ödeme Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Ödeme Detayları -->
+                    <div class="mb-4">
+                        <h5>Ödeme Özeti</h5>
+                        <table class="table">
+                            <tr>
+                                <th>İşlem:</th>
+                                <td>{{ odeme.get_odeme_tipi_display }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tutar:</th>
+                                <td>{{ odeme.tutar }} TL</td>
+                            </tr>
+                            {% if odeme.urun_one_cikarma %}
+                            <tr>
+                                <th>Ürün:</th>
+                                <td>{{ odeme.urun_one_cikarma.urun.ad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Paket:</th>
+                                <td>{{ odeme.urun_one_cikarma.secenek.ad }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if odeme.reklam %}
+                            <tr>
+                                <th>Reklam:</th>
+                                <td>{{ odeme.reklam.baslik }}</td>
+                            </tr>
+                            <tr>
+                                <th>Reklam Alanı:</th>
+                                <td>{{ odeme.reklam.reklam_alani.ad }}</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+
+                    <!-- Banka Bilgileri -->
+                    <div class="mb-4">
+                        <h5>Havale/EFT Bilgileri</h5>
+                        <div class="alert alert-info">
+                            <p class="mb-2"><strong>Banka:</strong> {{ banka_bilgileri.banka_adi }}</p>
+                            <p class="mb-2"><strong>Hesap Sahibi:</strong> {{ banka_bilgileri.hesap_sahibi }}</p>
+                            <p class="mb-2"><strong>IBAN:</strong> {{ banka_bilgileri.iban }}</p>
+                            <p class="mb-0"><strong>Açıklama:</strong> {{ banka_bilgileri.aciklama }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Bilgilendirme -->
+                    <div class="alert alert-warning">
+                        <h6 class="alert-heading mb-2">Önemli Bilgiler</h6>
+                        <ul class="mb-0">
+                            <li>Ödeme yaparken açıklama kısmına mutlaka <strong>{{ banka_bilgileri.aciklama }}</strong> yazınız.</li>
+                            <li>Havale/EFT işleminiz bize ulaştıktan sonra en geç 24 saat içinde işleminiz aktifleştirilecektir.</li>
+                            <li>Sorun yaşamanız durumunda destek ekibimizle iletişime geçebilirsiniz.</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'takas:profil' %}" class="btn btn-primary">
+                            <i class="fas fa-user me-2"></i>Profilime Git
+                        </a>
+                        <a href="{% url 'takas:anasayfa' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-home me-2"></i>Ana Sayfaya Dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

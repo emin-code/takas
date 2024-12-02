@@ -1,0 +1,141 @@
+{% extends "takas/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sol Kolon: Resim -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                {% if urun.resim %}
+                    <img src="{{ urun.resim.url }}" class="card-img-top" alt="{{ urun.ad }}" style="height: 400px; object-fit: contain;">
+                {% else %}
+                    <div class="bg-light text-center py-5">
+                        <i class="fas fa-box fa-5x text-muted"></i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sağ Kolon: Ürün Bilgileri -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title mb-3">{{ urun.ad }}</h2>
+                    
+                    {% if urun.fiyat %}
+                        <h3 class="text-primary mb-3">{{ urun.fiyat }} TL</h3>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <span class="badge {% if urun.durum == 'takas' %}bg-success{% elif urun.durum == 'satis' %}bg-primary{% else %}bg-info{% endif %}">
+                            {{ urun.get_durum_display }}
+                        </span>
+                        <span class="badge bg-secondary ms-2">İlan No: {{ urun.ilan_no }}</span>
+                    </div>
+
+                    <p class="mb-4">{{ urun.aciklama|linebreaks }}</p>
+
+                    <div class="mb-4">
+                        <h5>Stok Bilgisi</h5>
+                        <p>{{ urun.miktar }} {{ urun.get_birim_display }}</p>
+                    </div>
+
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-3"><i class="fas fa-store me-2"></i>{{ urun.esnaf.firma_adi }}</h5>
+                            <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>{{ urun.esnaf.adres }}</p>
+                            <p class="mb-2"><i class="fas fa-phone me-2"></i>{{ urun.esnaf.telefon }}</p>
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <div class="d-grid gap-2">
+                            {% if urun.durum == 'takas' or urun.durum == 'her_ikisi' %}
+                            <a href="{% url 'takas:takas_teklifi_gonder' urun.id %}" class="btn btn-success">
+                                <i class="fas fa-exchange-alt me-2"></i>Takas Teklifi Gönder
+                            </a>
+                            {% endif %}
+
+                            {% if urun.durum == 'satis' or urun.durum == 'her_ikisi' %}
+                            <a href="{% url 'takas:satin_al' urun.id %}" class="btn btn-primary">
+                                <i class="fas fa-shopping-cart me-2"></i>Satın Al
+                            </a>
+                            {% endif %}
+
+                            <a href="{% url 'takas:mesaj_gonder' urun.esnaf.id %}?urun_id={{ urun.id }}" class="btn btn-outline-primary">
+                                <i class="fas fa-envelope me-2"></i>Satıcıya Mesaj Gönder
+                            </a>
+
+                            {% if urun.esnaf.whatsapp %}
+                            <a href="https://wa.me/{{ urun.esnaf.whatsapp|cut:'+' }}" target="_blank" class="btn btn-outline-success">
+                                <i class="fab fa-whatsapp me-2"></i>WhatsApp ile İletişime Geç
+                            </a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            İşlem yapabilmek için <a href="{% url 'login' %}" class="alert-link">giriş yapın</a> veya 
+                            <a href="{% url 'takas:kayit' %}" class="alert-link">yeni hesap oluşturun</a>.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benzer Ürünler -->
+    {% if benzer_urunler %}
+    <div class="mt-4">
+        <h3 class="mb-4">Benzer Ürünler</h3>
+        <div class="row">
+            {% for benzer_urun in benzer_urunler %}
+            <div class="col-6 col-md-3 mb-4">
+                <div class="card h-100">
+                    {% if benzer_urun.resim %}
+                        <img src="{{ benzer_urun.resim.url }}" class="card-img-top" alt="{{ benzer_urun.ad }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-light text-center py-4">
+                            <i class="fas fa-box fa-3x text-muted"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">{{ benzer_urun.ad }}</h5>
+                        <p class="card-text text-muted small mb-2">{{ benzer_urun.esnaf.firma_adi }}</p>
+                        {% if benzer_urun.fiyat %}
+                            <p class="card-text fw-bold text-primary mb-2">{{ benzer_urun.fiyat }} TL</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{% url 'takas:urun_detay' benzer_urun.id %}" class="btn btn-outline-primary btn-sm d-block">İncele</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Ürün Sahibi İşlemleri -->
+    {% if user.esnafprofili == urun.esnaf %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Ürün İşlemleri</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-grid gap-2">
+                <a href="{% url 'takas:urun_one_cikar' urun.id %}" class="btn btn-success">
+                    <i class="fas fa-star me-2"></i>Ürünü Öne Çıkar
+                </a>
+                <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#durumDegistirModal">
+                    <i class="fas fa-edit me-2"></i>Durum Değiştir
+                </button>
+                <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#urunSilModal">
+                    <i class="fas fa-trash me-2"></i>Ürünü Sil
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 
